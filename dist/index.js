@@ -21,7 +21,7 @@ class Token {
                 let bnValue = new bignumber_js_1.default(value).multipliedBy(multiplier);
                 return bnValue.toFixed(0);
             },
-            isEqual(token) {
+            isEqual: (token) => {
                 return this.getAddress().toLocaleLowerCase() == token.getAddress().toLocaleLowerCase();
             }
         };

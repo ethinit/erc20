@@ -88,7 +88,7 @@ export class Token {
             return bnValue.toFixed(0);
         },
 
-        isEqual(token: Token): boolean {
+        isEqual: (token: Token): boolean => {
             return this.getAddress().toLocaleLowerCase() == token.getAddress().toLocaleLowerCase();
         }
     };
