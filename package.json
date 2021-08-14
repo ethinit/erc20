@@ -1,0 +1,16 @@
+{
+    "name": "erc20",
+    "version": "1.0.0",
+    "description": "SDK for ERC20 Tokens",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "author": "phpnikolov",
+    "license": "ISC",
+    "devDependencies": {
+        "typescript": "^3.7.5"
+    },
+    "dependencies": {
+        "bignumber": "^1.1.0",
+        "web3": "^1.2.0"
+    }
+}
