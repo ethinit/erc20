@@ -23,5 +23,6 @@ export declare class Token {
         getDecimals: () => Promise<number>;
         toDecimal: (value: string) => Promise<number>;
         fromDecimal: (value: number) => Promise<string>;
+        isEqual(token: Token): boolean;
     };
 }

@@ -86,6 +86,10 @@ export class Token {
             let bnValue: BigNumber = new BigNumber(value).multipliedBy(multiplier);
 
             return bnValue.toFixed(0);
+        },
+
+        isEqual(token: Token): boolean {
+            return this.getAddress().toLocaleLowerCase() == token.getAddress().toLocaleLowerCase();
         }
     };
 }

@@ -20,6 +20,9 @@ class Token {
                 let multiplier = new bignumber_js_1.default(10).pow(await this.utils.getDecimals());
                 let bnValue = new bignumber_js_1.default(value).multipliedBy(multiplier);
                 return bnValue.toFixed(0);
+            },
+            isEqual(token) {
+                return this.getAddress().toLocaleLowerCase() == token.getAddress().toLocaleLowerCase();
             }
         };
         this.contract = new this.web3.eth.Contract(abi, address);
