@@ -27,11 +27,12 @@ class Token {
         };
         this.contract = new this.web3.eth.Contract(abi, address);
     }
-    async _cachedCall(methodName) {
-        if (typeof this.cache[methodName] === 'undefined') {
-            this.cache[methodName] = await this.contract.methods[methodName]().call();
+    async _cachedCall(methodName, params = []) {
+        let cacheKey = methodName + params.join(';');
+        if (typeof this.cache[cacheKey] === 'undefined') {
+            this.cache[cacheKey] = this.contract.methods[methodName].apply(null, params).call();
         }
-        return this.cache[methodName];
+        return this.cache[cacheKey];
     }
     getAddress() {
         return this.contract.options.address;
@@ -46,6 +47,7 @@ class Token {
         return this.contract.methods.totalSupply().call().then(this.utils.toDecimal);
     }
     getBalance(address) {
+        return this._cachedCall('balanceOf', [address]).then(this.utils.toDecimal);
         return this.contract.methods.balanceOf(address).call().then(this.utils.toDecimal);
     }
     getAllowance(owner, spender) {

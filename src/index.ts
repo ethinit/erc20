@@ -13,12 +13,13 @@ export class Token {
         this.contract = new this.web3.eth.Contract(abi, address);
     }
 
-    protected async _cachedCall(methodName: string): Promise<string> {
-        if (typeof this.cache[methodName] === 'undefined') {
-            this.cache[methodName] = await this.contract.methods[methodName]().call();
+    protected async _cachedCall(methodName: string, params: string[] = []): Promise<string> {
+        let cacheKey = methodName + params.join(';');
+        if (typeof this.cache[cacheKey] === 'undefined') {
+            this.cache[cacheKey] = this.contract.methods[methodName].apply(null, params).call();
         }
 
-        return this.cache[methodName];
+        return this.cache[cacheKey];
     }
 
     getAddress(): string {
@@ -38,6 +39,7 @@ export class Token {
     }
 
     getBalance(address: string): Promise<number> {
+        return this._cachedCall('balanceOf', [address]).then(this.utils.toDecimal);
         return this.contract.methods.balanceOf(address).call().then(this.utils.toDecimal);
     }
 
