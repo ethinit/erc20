@@ -47,7 +47,6 @@ class Token {
         return this.contract.methods.totalSupply().call().then(this.utils.toDecimal);
     }
     getBalance(address) {
-        return this._cachedCall('balanceOf', [address]).then(this.utils.toDecimal);
         return this.contract.methods.balanceOf(address).call().then(this.utils.toDecimal);
     }
     getAllowance(owner, spender) {
