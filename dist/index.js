@@ -27,6 +27,19 @@ class Token {
         };
         this.contract = new this.web3.eth.Contract(abi, address);
     }
+    static getInstance(web3, address, abi) {
+        if (!web3['ethinit']) {
+            web3['ethinit'] = {};
+        }
+        if (!web3['ethinit']['erc20']) {
+            web3['ethinit']['erc20'] = {};
+        }
+        address = address.toLowerCase();
+        if (!web3['ethinit']['erc20'][address]) {
+            web3['ethinit']['erc20'][address] = new Token(web3, address, abi);
+        }
+        return web3['ethinit']['erc20'][address];
+    }
     async _cachedCall(methodName, params = []) {
         let cacheKey = methodName + params.join(';');
         if (typeof this.cache[cacheKey] === 'undefined') {

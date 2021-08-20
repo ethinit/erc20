@@ -13,6 +13,23 @@ export class Token {
         this.contract = new this.web3.eth.Contract(abi, address);
     }
 
+    static getInstance(web3: Web3, address: string, abi?: AbiItem[]): Token {
+        if (!web3['ethinit']) {
+            web3['ethinit'] = {};
+        }
+
+        if (!web3['ethinit']['erc20']) {
+            web3['ethinit']['erc20'] = {};
+        }
+
+        address = address.toLowerCase();
+        if (!web3['ethinit']['erc20'][address]) {
+            web3['ethinit']['erc20'][address] = new Token(web3, address, abi);
+        }
+
+        return web3['ethinit']['erc20'][address];
+    }
+
     protected async _cachedCall(methodName: string, params: string[] = []): Promise<string> {
         let cacheKey = methodName + params.join(';');
         if (typeof this.cache[cacheKey] === 'undefined') {
@@ -71,18 +88,18 @@ export class Token {
     }
 
     public utils = {
-        getDecimals: async(): Promise<number> => {
+        getDecimals: async (): Promise<number> => {
             return parseInt(await this._cachedCall('decimals'));
         },
 
-        toDecimal : async(value: string): Promise<number> => {
+        toDecimal: async (value: string): Promise<number> => {
             let multiplier: BigNumber = new BigNumber(10).pow(await this.utils.getDecimals());
             let bnValue: BigNumber = new BigNumber(value).div(multiplier);
-    
+
             return bnValue.lt(Number.MAX_SAFE_INTEGER) ? bnValue.toNumber() : Number.MAX_SAFE_INTEGER;
         },
 
-        fromDecimal: async(value: number): Promise<string> => {
+        fromDecimal: async (value: number): Promise<string> => {
             let multiplier: BigNumber = new BigNumber(10).pow(await this.utils.getDecimals());
             let bnValue: BigNumber = new BigNumber(value).multipliedBy(multiplier);
 

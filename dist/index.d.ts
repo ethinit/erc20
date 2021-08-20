@@ -9,6 +9,7 @@ export declare class Token {
         [key: string]: string;
     };
     constructor(web3: Web3, address: string, abi?: AbiItem[]);
+    static getInstance(web3: Web3, address: string, abi?: AbiItem[]): Token;
     protected _cachedCall(methodName: string, params?: string[]): Promise<string>;
     getAddress(): string;
     getName(): Promise<string>;
